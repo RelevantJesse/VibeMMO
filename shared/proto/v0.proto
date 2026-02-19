@@ -1,0 +1,122 @@
+syntax = "proto3";
+
+package vibemmo.v0;
+
+option csharp_namespace = "VibeMMO.Shared.Protocol.V0";
+
+enum EntityKind {
+  ENTITY_KIND_UNSPECIFIED = 0;
+  ENTITY_KIND_PLAYER = 1;
+  ENTITY_KIND_NPC = 2;
+  ENTITY_KIND_LOOT = 3;
+}
+
+message ClientPacket {
+  oneof payload {
+    C_Hello c_hello = 1;
+    C_MoveInput c_move_input = 2;
+    C_ChatSend c_chat_send = 3;
+    C_Ping c_ping = 4;
+    C_Attack c_attack = 5;
+    C_Pickup c_pickup = 6;
+  }
+}
+
+message ServerPacket {
+  oneof payload {
+    S_Welcome s_welcome = 1;
+    S_Reject s_reject = 2;
+    S_EntitySpawn s_entity_spawn = 3;
+    S_EntityDespawn s_entity_despawn = 4;
+    S_Snapshot s_snapshot = 5;
+    S_ChatBroadcast s_chat_broadcast = 6;
+    S_Pong s_pong = 7;
+    S_Kick s_kick = 8;
+  }
+}
+
+message C_Hello {
+  uint32 protocol_version = 1;
+  string display_name = 2;
+  bytes reconnect_token = 3;
+}
+
+message C_MoveInput {
+  uint32 seq = 1;
+  float move_x = 2;
+  float move_y = 3;
+}
+
+message C_ChatSend {
+  string text = 1;
+}
+
+message C_Ping {
+  uint32 ping_id = 1;
+  uint64 client_time_ms = 2;
+}
+
+message C_Attack {
+  uint32 target_entity_id = 1;
+}
+
+message C_Pickup {
+  uint32 loot_entity_id = 1;
+}
+
+message S_Welcome {
+  uint32 protocol_version = 1;
+  uint32 your_entity_id = 2;
+  bytes reconnect_token = 3;
+  uint32 tick_rate_hz = 4;
+  uint32 snapshot_rate_hz = 5;
+}
+
+message S_Reject {
+  string reason = 1;
+}
+
+message S_EntitySpawn {
+  uint32 entity_id = 1;
+  string display_name = 2;
+  float x = 3;
+  float y = 4;
+  EntityKind entity_kind = 5;
+}
+
+message S_EntityDespawn {
+  uint32 entity_id = 1;
+}
+
+message S_Snapshot {
+  uint32 server_tick = 1;
+  uint32 last_processed_input_seq = 2;
+  repeated EntityState entities = 3;
+  uint32 your_coins = 4;
+}
+
+message EntityState {
+  uint32 entity_id = 1;
+  float x = 2;
+  float y = 3;
+  float vx = 4;
+  float vy = 5;
+  EntityKind entity_kind = 6;
+  uint32 current_health = 7;
+  uint32 max_health = 8;
+}
+
+message S_ChatBroadcast {
+  uint32 from_entity_id = 1;
+  string from_name = 2;
+  string text = 3;
+}
+
+message S_Pong {
+  uint32 ping_id = 1;
+  uint64 server_time_ms = 2;
+}
+
+message S_Kick {
+  string reason = 1;
+}

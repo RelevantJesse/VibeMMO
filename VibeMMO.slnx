@@ -1,0 +1,17 @@
+<Solution>
+  <Folder Name="/client/">
+    <Project Path="client/VibeMMO.Client/VibeMMO.Client.csproj">
+      <BuildType Solution="Release|*" Project="ExportDebug" />
+    </Project>
+  </Folder>
+  <Folder Name="/server/">
+    <Project Path="server/VibeMMO.Server/VibeMMO.Server.csproj" />
+  </Folder>
+  <Folder Name="/shared/">
+    <Project Path="shared/VibeMMO.Shared/VibeMMO.Shared.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/VibeMMO.Shared.Tests/VibeMMO.Shared.Tests.csproj" />
+    <Project Path="tests/VibeMMO.Server.Tests/VibeMMO.Server.Tests.csproj" />
+  </Folder>
+</Solution>
